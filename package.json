@@ -1,0 +1,66 @@
+{
+    "name": "@calculusky/ikeja-electric-sdk",
+    "version": "1.0.0",
+    "description": "Ikeja Electric SDK for Nodejs",
+    "main": "dist/index.js",
+    "types": "dist/index.d.ts",
+    "engines": {
+        "node": ">=18.18.2"
+    },
+    "files": [
+        "dist/**/*",
+        "LICENSE",
+        "package.json",
+        "README.md"
+    ],
+    "scripts": {
+        "test": "jest --config ./jest.config.js",
+        "format": "prettier --write \"src/**/*.ts\"",
+        "lint": "eslint \"src/**/*.ts\" --fix",
+        "build": "tsc",
+        "husky:install": "husky install",
+        "prepare": "pnpm build",
+        "prepublishOnly": "pnpm lint && pnpm test",
+        "preversion": "pnpm lint",
+        "version": "pnpm format && git add .",
+        "postversion": "git push --tags",
+        "npmpatch": "npm version patch",
+        "npmpublish": "npm publish --access public"
+    },
+    "keywords": [
+        "Bill Payment",
+        "Power Purchase",
+        "Electricity Payment",
+        "Ikeja Electric API",
+        "Ikeja Electric SDK",
+        "Ikeja Power"
+    ],
+    "author": "Nwankwo Chinedum Valentine <chinedum@chinedumvalentine.com.ng>",
+    "license": "MIT",
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/calculuskyikeja-electric-sdk.git"
+    },
+    "bugs": {
+        "url": "https://github.com/calculuskyikeja-electric-sdk/issues"
+    },
+    "homepage": "https://github.com/calculuskyikeja-electric-sdk#readme",
+    "devDependencies": {
+        "@commitlint/cli": "^18.4.3",
+        "@commitlint/config-conventional": "^18.4.3",
+        "@types/node": "^20.10.2",
+        "@typescript-eslint/eslint-plugin": "^6.13.1",
+        "@typescript-eslint/parser": "^6.13.1",
+        "eslint": "^8.55.0",
+        "eslint-config-prettier": "^9.0.0",
+        "eslint-plugin-prettier": "^5.0.1",
+        "husky": "^8.0.3",
+        "lint-staged": "^15.1.0",
+        "prettier": "^3.1.0",
+        "typescript": "^5.3.2"
+    },
+    "dependencies": {
+        "dayjs": "^1.11.10",
+        "xml2js": "^0.6.2"
+    }
+}
