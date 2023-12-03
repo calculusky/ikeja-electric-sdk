@@ -1,6 +1,9 @@
+import { IncomingHttpHeaders } from "http";
+import { IkejaElectricError } from "src/errors";
+
 export type HttpMethod = "POST";
 
-type HttpHeaders = {
+export type HttpHeaders = {
     "Content-Type": "application/xml";
 };
 export interface SendRequestOptions {
@@ -8,5 +11,16 @@ export interface SendRequestOptions {
     port: number;
     method: HttpMethod;
     headers: HttpHeaders;
-    data: Record<string, any>;
+    data: string;
 }
+
+export interface IHttpsClient {
+    sendRequest(options: SendRequestOptions): Promise<IHttpsClientResponse>;
+}
+
+export type IHttpsClientResponse = {
+    status: number;
+    headers: IncomingHttpHeaders;
+    error: IkejaElectricError | null;
+    data: string;
+};

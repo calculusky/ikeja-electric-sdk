@@ -1,16 +1,22 @@
 import { IncomingHttpHeaders, IncomingMessage } from "http";
-import { SendRequestOptions } from "./types/httpClient";
-import { request } from "https";
+import {
+    IHttpsClient,
+    IHttpsClientResponse,
+    SendRequestOptions,
+} from "./types/httpClient";
+import { request } from "http";
 import { IkejaElectricError } from "./errors";
 
-export class HttpClient {
-    sendRequest(options: SendRequestOptions) {
+export class HttpClient implements IHttpsClient {
+    sendRequest(options: SendRequestOptions): Promise<IHttpsClientResponse> {
+        console.log(options, "****************");
         return new Promise((resolve, reject) => {
             const req = request({
-                hostname: options.hostname,
-                method: options.method,
+                hostname: "restapi.adequateshop.com", //options.hostname,
+                path: "/api/Traveler?page=6",
+                method: "GET", //options.method,
                 headers: options.headers,
-                port: options.port,
+                // port: options.port,
             });
 
             req.on("response", (response: IncomingMessage) => {
@@ -27,7 +33,7 @@ export class HttpClient {
     }
 }
 
-class HttpsClientResponse {
+class HttpsClientResponse implements IHttpsClientResponse {
     status: number;
     headers: IncomingHttpHeaders;
     data: string;

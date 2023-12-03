@@ -25,7 +25,8 @@
         "version": "pnpm format && git add .",
         "postversion": "git push --tags",
         "npmpatch": "npm version patch",
-        "npmpublish": "npm publish --access public"
+        "npmpublish": "npm publish --access public",
+        "te": "tsc && node dist/test"
     },
     "keywords": [
         "Bill Payment",
@@ -48,7 +49,8 @@
     "devDependencies": {
         "@commitlint/cli": "^18.4.3",
         "@commitlint/config-conventional": "^18.4.3",
-        "@types/node": "^20.10.2",
+        "@types/node": "^18.18.2",
+        "@types/xml2js": "^0.4.14",
         "@typescript-eslint/eslint-plugin": "^6.13.1",
         "@typescript-eslint/parser": "^6.13.1",
         "eslint": "^8.55.0",
