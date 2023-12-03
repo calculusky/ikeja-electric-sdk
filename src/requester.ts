@@ -18,12 +18,15 @@ import * as Util from "./utils";
 export default class Requester implements IRequester {
     private xmlParser: Parser;
     private xmlBuilder: Builder;
+    private decodedPassword: string;
     private readonly xmlRootName = "PayWsRequest";
     private readonly xmlRootNameForSignatureBuilder = "data";
     constructor(
         private httpClient: IHttpsClient,
         private config: RequesterConfig,
     ) {
+        this.decodedPassword = this.decodeBase64Password();
+
         this.xmlParser = new Parser({
             trim: true,
             normalize: true,
@@ -43,6 +46,10 @@ export default class Requester implements IRequester {
 
     getConfig() {
         return this.config;
+    }
+
+    private decodeBase64Password() {
+        return atob(this.config.cisPassword);
     }
 
     private async parseXml(xml: string) {
@@ -71,13 +78,10 @@ export default class Requester implements IRequester {
     }
 
     private buildSignature(options: SignatureBuilderOptions) {
-        //TODO: handle base64 password decoder
-        const decodedPassword = this.config.cisPassword;
-
         const xmlRequestBody = this.buildXmlRequestBodyForSignature(
             options.jsonRequestBody,
         );
-        const dataSequence = `${this.config.appId}${options.serviceCode}${decodedPassword}${xmlRequestBody}`;
+        const dataSequence = `${this.config.appId}${options.serviceCode}${this.decodedPassword}${xmlRequestBody}`;
         return createHash("md5").update(dataSequence).digest("hex");
     }
 
@@ -119,7 +123,13 @@ export default class Requester implements IRequester {
             if (resp.error) {
                 throw resp.error;
             }
-            // console.log(resp.data, "********************DATA*********");
+            if (!resp.data) {
+                const err = new IkejaElectricError(
+                    "Request failed. Please try again",
+                );
+                err.status = 500;
+                throw err;
+            }
             const parsedXml = await this.parseXml(resp.data);
 
             return parsedXml;

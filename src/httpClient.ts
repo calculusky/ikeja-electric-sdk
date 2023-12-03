@@ -8,7 +8,9 @@ import { request } from "http";
 import { IkejaElectricError } from "./errors";
 
 export class HttpClient implements IHttpsClient {
-    sendRequest(options: SendRequestOptions): Promise<IHttpsClientResponse> {
+    async sendRequest(
+        options: SendRequestOptions,
+    ): Promise<IHttpsClientResponse> {
         console.log(options, "****************");
         return new Promise((resolve, reject) => {
             const req = request({
