@@ -21,3 +21,13 @@ export const generateRandomNumber = (size: number): string => {
     }
     return str;
 };
+
+export const convertHashPropValuesToNumber = (
+    obj: Record<string, any>,
+    keys: string[],
+) => {
+    return keys.reduce((hash, val) => {
+        hash[val] = +hash[val];
+        return hash;
+    }, obj);
+};
