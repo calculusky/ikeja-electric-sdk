@@ -130,9 +130,14 @@ export default class Requester implements IRequester {
                 err.status = 500;
                 throw err;
             }
+
             const parsedXml = await this.parseXml(resp.data);
 
-            return parsedXml;
+            //return the data object
+            return parsedXml.data;
+
+            // const parsedXml = await this.parseXml(myXml);
+            // return parsedXml.data;
         } catch (error) {
             switch (true) {
                 case error instanceof IkejaElectricError: {

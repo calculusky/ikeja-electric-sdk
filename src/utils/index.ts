@@ -22,12 +22,12 @@ export const generateRandomNumber = (size: number): string => {
     return str;
 };
 
-export const convertHashPropValuesToNumber = (
+export const objectStringValuesToFloat = (
     obj: Record<string, any>,
     keys: string[],
 ) => {
     return keys.reduce((hash, val) => {
-        hash[val] = +hash[val];
+        hash[val] = parseFloat(hash[val]);
         return hash;
     }, obj);
 };

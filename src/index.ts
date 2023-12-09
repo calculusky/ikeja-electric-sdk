@@ -1,11 +1,15 @@
 import PowerAPI from "./api/power";
+import { ReconcilerAPI } from "./api/reconciler";
 import { HttpClient } from "./httpClient";
 import Requester from "./requester";
 import { IkejaElectricOptions } from "./types/config";
+import { IPower } from "./types/power";
+import { IReconciler } from "./types/reconciler";
 import * as Util from "./utils";
 
 export default class IkejaElectric {
-    readonly power: PowerAPI;
+    readonly power: IPower;
+    readonly reconciler: IReconciler;
     private requester: Requester;
     constructor(protected ikejaElectricOptions: IkejaElectricOptions) {
         const config = Util.buildConfig({
@@ -27,5 +31,6 @@ export default class IkejaElectric {
         });
 
         this.power = new PowerAPI(this.requester);
+        this.reconciler = new ReconcilerAPI(this.requester);
     }
 }
