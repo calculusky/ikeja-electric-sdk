@@ -154,4 +154,11 @@ export default class BaseAPI {
         }
         return false;
     }
+
+    protected async uploadFile(options: r.UploadReconciliationFileOptions) {
+        return await this.requester.uploadReconciliationFile({
+            data: options.data,
+            remoteFilePath: options.remoteFilePath,
+        });
+    }
 }

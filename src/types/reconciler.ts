@@ -1,3 +1,6 @@
+import { Kind, PaidType } from "./power";
+import { FtpResponse } from "./requester";
+
 export type NotifyAutoReconciliationObject = {
     /** Vending client ID, a unique vending client ID assigned to each vending client by CIS system. */
     clientID: string;
@@ -16,8 +19,31 @@ export type NotifyAutoReconciliationObject = {
     fileName: string;
 };
 
-export type NotifyAutoReconciliationOptions = {
-    date?: string;
+// export type NotifyAutoReconciliationOptions = {
+//     date?: string;
+// };
+
+export type CsvFileBodyContent = {
+    orderNO: string;
+    kind: Kind;
+    requestNO: string;
+    amountTendered: number;
+    paidType: PaidType;
+    transactionDate: string;
+    receiptNO: string;
+};
+
+export type CsvFirstRowContent = {
+    clientId: string;
+    totalAmount: number;
+    totalRecord: number;
+    transactionStartDate: string;
+    transactionEndDate: string;
+};
+
+export type CsvFileContent = {
+    firstRow: CsvFirstRowContent;
+    records: CsvFileBodyContent[];
 };
 
 export type IReconciler = {
@@ -44,6 +70,16 @@ export type IReconciler = {
      * @param options
      */
     notifyAutoReconciliation(
-        options: NotifyAutoReconciliationOptions,
+        notifyObject?: NotifyAutoReconciliationObject,
     ): Promise<boolean>;
+
+    /**
+     * @description Upload daily transaction reconciliation file via an ftp client
+     * @param dataObject
+     * @param {boolean} [notify=true] set this option false to disable auto notification after a reconciliation file upload
+     */
+    uploadReconciliationFile(
+        dataObject: CsvFileContent,
+        notify: boolean,
+    ): Promise<FtpResponse>;
 };

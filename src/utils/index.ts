@@ -10,6 +10,7 @@ export const buildConfig = (options: IkejaElectricOptions): RequesterConfig => {
         cisPort: Config.CIS_PORT,
         sftpUsername: options.sftpUsername,
         sftpPort: Config.SFTP_PORT,
+        sftpHost: Config.SFTP_HOST,
     };
 };
 

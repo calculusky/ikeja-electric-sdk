@@ -3,16 +3,22 @@ import { IkejaElectricError } from "./errors";
 import { RequesterConfig } from "./types/config";
 import { IHttpsClient } from "./types/httpClient";
 import {
+    FtpResponse,
     HeaderBuilderOptions,
     IRequester,
     JsonRequestHeader,
     JsonRequestPayload,
     SignatureBuilderOptions,
+    UploadReconciliationFileOptions,
 } from "./types/requester";
 import { Builder, Parser } from "xml2js";
 import { createHash } from "crypto";
 import * as dayjs from "dayjs";
 import * as Util from "./utils";
+import { IFtpClient } from "./types/ftpClient";
+import { Readable } from "stream";
+import { createArrayCsvStringifier } from "csv-writer";
+
 //import { myXml } from "./test";
 
 export default class Requester implements IRequester {
@@ -23,6 +29,7 @@ export default class Requester implements IRequester {
     private readonly xmlRootNameForSignatureBuilder = "data";
     constructor(
         private httpClient: IHttpsClient,
+        private ftpClient: IFtpClient,
         private config: RequesterConfig,
     ) {
         this.decodedPassword = this.decodeBase64Password();
@@ -153,6 +160,35 @@ export default class Requester implements IRequester {
                     throw err;
                 }
             }
+        }
+    }
+    async uploadReconciliationFile(
+        options: UploadReconciliationFileOptions,
+    ): Promise<FtpResponse> {
+        try {
+            // Create a CSV stringifier
+            const csvStringifier = createArrayCsvStringifier({ header: [] });
+            const csvString = csvStringifier.stringifyRecords(options.data);
+
+            // Convert CSV string to readable stream
+            const csvStream = Readable.from(csvString);
+
+            const resp = await this.ftpClient.uploadFile({
+                host: this.config.sftpHost,
+                port: this.config.sftpPort,
+                username: this.config.sftpUsername,
+                password: this.config.sftpPassword,
+                file: csvStream,
+                remoteFilePath: options.remoteFilePath,
+            });
+            return resp;
+        } catch (error) {
+            const err = new IkejaElectricError(
+                error.message ?? "Failed to upload reconciliation file",
+            );
+            err.status = error.status ?? 500;
+            err.stack = error.stack;
+            throw err;
         }
     }
 }

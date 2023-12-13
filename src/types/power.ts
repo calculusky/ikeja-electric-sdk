@@ -3,7 +3,7 @@ import { ServiceCode } from "./requester";
 export type ConfirmationType = "MN" | "CN";
 type AccountType = "MD" | "NMD";
 export type Kind = "POSTPAY" | "PREPAY";
-type PaidType = "bankteller" | "cash" | "cheque" | "POS";
+export type PaidType = "bankteller" | "cash" | "cheque" | "POS";
 type PaymentStatus = "SUCCESS" | "FAILED";
 
 type CustomerBasicDetailObject = {

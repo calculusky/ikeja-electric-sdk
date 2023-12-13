@@ -25,7 +25,20 @@ export interface JsonRequestHeader {
     signature: string;
 }
 
+export type UploadReconciliationFileOptions = {
+    data: (string | number)[][];
+    remoteFilePath: string;
+};
+
+export type FtpResponse = {
+    readonly message: string;
+    readonly code: number;
+};
+
 export interface IRequester {
     getConfig(): RequesterConfig;
-    sendAPIRequest(options: JsonRequestPayload);
+    sendAPIRequest(options: JsonRequestPayload): Promise<Record<string, any>>;
+    uploadReconciliationFile(
+        options: UploadReconciliationFileOptions,
+    ): Promise<FtpResponse>;
 }

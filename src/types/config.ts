@@ -22,5 +22,6 @@ export type IkejaElectricOptions = IdConfig &
 export type RequesterConfig = {
     cisHost: string;
     cisPort: number;
+    sftpHost: string;
     sftpPort: number;
 } & IkejaElectricOptions;

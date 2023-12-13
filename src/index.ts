@@ -1,5 +1,6 @@
 import PowerAPI from "./api/power";
 import { ReconcilerAPI } from "./api/reconciler";
+import FtpClient from "./ftpClient";
 import { HttpClient } from "./httpClient";
 import Requester from "./requester";
 import { IkejaElectricOptions } from "./types/config";
@@ -19,8 +20,9 @@ export default class IkejaElectric {
             sftpUsername: this.ikejaElectricOptions.sftpUsername,
         });
 
-        const client = new HttpClient();
-        this.requester = new Requester(client, {
+        const httpClient = new HttpClient();
+        const ftpClient = new FtpClient();
+        this.requester = new Requester(httpClient, ftpClient, {
             appId: config.appId,
             cisHost: config.cisHost,
             cisPassword: config.cisPassword,
@@ -28,6 +30,7 @@ export default class IkejaElectric {
             sftpPassword: config.sftpPassword,
             sftpPort: config.sftpPort,
             sftpUsername: config.sftpUsername,
+            sftpHost: config.sftpHost,
         });
 
         this.power = new PowerAPI(this.requester);
