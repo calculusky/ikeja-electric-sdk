@@ -37,7 +37,7 @@ const IkejaElectric = require("@calculusky/ikeja-electric-sdk").default;
 **Typescript Usage**
 
 ```ts
-import IkejaElectric from = "@calculusky/ikeja-electric-sdk";
+import IkejaElectric from "@calculusky/ikeja-electric-sdk";
 
 const ie = new IkejaElectric({
     appId: "YOUR_APPID",
@@ -45,7 +45,6 @@ const ie = new IkejaElectric({
     sftpPassword: "YOUR_FTP_PASSWORD",
     sftpUsername: "YOUR_FTP_USERNAME",
 });
-
 ```
 
 Note: For sandbox environment, set the sandbox option in the second argument of the SDK as seen below.
