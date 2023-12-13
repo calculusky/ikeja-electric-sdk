@@ -24,21 +24,54 @@ export type NotifyAutoReconciliationObject = {
 // };
 
 export type CsvFileBodyContent = {
+    /**
+     * The unique transaction identifier provided by each vending client. 
+       Generation rules: yyyyMMddHHmmssSSS+appID(last 3 digits)+serial number (6 digits) , for example: 20210910093045123001000001
+     */
     orderNO: string;
+
+    /** 
+     * (POSTPAY/PREPAY)
+        Account Payment for Postpaid /Purchase Credit for Prepaid
+     */
     kind: Kind;
+    /** When “kind” is POSTPAY, this field puts Account No., while PREPAY, then Meter No. */
+
     requestNO: string;
+
+    /** The total NGN amount of the payment made by the combination of cash, cheque, debit card, credit card, bankteller, etc */
     amountTendered: number;
+
+    /** 
+     * cash/cheque/POS /bankteller
+       Remarks: POS refers to using credit card or debit card to purchase electricity.
+     */
     paidType: PaidType;
+
+    /** Transaction date time. Format: yyyyMMddHHmmss eg 20210917093045 */
     transactionDate: string;
+
+    /** Transaction receipt number eg 210917123457 */
     receiptNO: string;
 };
 
 export type CsvFirstRowContent = {
-    clientId: string;
+    /** Sum total amount of transactions recorded for the day */
     totalAmount: number;
+
+    /** Total number of transactions recorded for the day */
     totalRecord: number;
+
+    /** Transaction Start Date. Format yyyyMMdd eg 20220713 */
     transactionStartDate: string;
+
+    /** Transaction End Date Format yyyyMMdd eg 20220713 */
     transactionEndDate: string;
+};
+
+export type UploadReconciliationFileOptions = {
+    /** Trigger auto transaction reconciliation after a successful file upload. Default is true */
+    notify?: boolean;
 };
 
 export type CsvFileContent = {
@@ -57,7 +90,7 @@ export type IReconciler = {
      *      Unilateral transaction processing rules:
      *      - If vending client has performed transaction successfully, but CIS system has not performed it, CIS system obtains the transaction information from the virtual payment record table and convert it to real payment record;
      *      - If vending client has not performed transaction successfully, but CIS system has performed it successfully, CIS system will perform transaction reversal;
-     *  4. Reconciliation file name consists of three parts: vending client ID (clientID), file type, and transaction date. The specific format is: vending client ID_file type_transaction date.csv. The file type is always “COLLECTION” in this phase of project. For example: UT000011_COLLECTION_20210715.csv
+     *   4. Reconciliation file name consists of three parts: vending client ID (clientID), file type, and transaction date. The specific format is: vending client ID_file type_transaction date.csv. The file type is always “COLLECTION” in this phase of project. For example: UT000011_COLLECTION_20210715.csv
      *   5. Vending client only initiates reconciliation service for successful transactions.
      *   6. For the details of the reconciliation file, please strictly refer to section 6.2 Reconciliation File Format.
      *   7. After the reconciliation is successfully completed, CIS system will move the file to the designated backup directory.
@@ -76,10 +109,10 @@ export type IReconciler = {
     /**
      * @description Upload daily transaction reconciliation file via an ftp client
      * @param dataObject
-     * @param {boolean} [notify=true] set this option false to disable auto notification after a reconciliation file upload
+     * @param options
      */
     uploadReconciliationFile(
         dataObject: CsvFileContent,
-        notify: boolean,
+        options?: UploadReconciliationFileOptions,
     ): Promise<FtpResponse>;
 };

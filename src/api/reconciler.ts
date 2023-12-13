@@ -38,7 +38,7 @@ export class ReconcilerAPI extends BaseAPI implements rc.IReconciler {
     private buildCsvData(buildObj: rc.CsvFileContent) {
         const { firstRow, records } = buildObj;
         const firstRowData = [
-            firstRow.clientId,
+            this.getConfig().appId,
             firstRow.totalAmount,
             firstRow.totalRecord,
             firstRow.transactionStartDate,
@@ -61,7 +61,7 @@ export class ReconcilerAPI extends BaseAPI implements rc.IReconciler {
 
     async uploadReconciliationFile(
         dataObject: rc.CsvFileContent,
-        notify: boolean = true,
+        options: rc.UploadReconciliationFileOptions = { notify: true },
     ) {
         const remoteFilePath = `${this.buildFilePath()}/${this.buildFileName()}`;
         const notifyOptions = this.buildReconciliationPayload();
@@ -71,7 +71,7 @@ export class ReconcilerAPI extends BaseAPI implements rc.IReconciler {
             data: csvData,
             remoteFilePath: remoteFilePath,
         });
-        if (notify) {
+        if (options.notify) {
             await this.notifyAutoReconciliation(notifyOptions);
         }
         return uploaded;

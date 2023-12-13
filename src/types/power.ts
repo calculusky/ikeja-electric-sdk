@@ -304,10 +304,10 @@ export type ReprintResponseObject<C extends ConfirmationType> = {
 } & Optional<CustomerBasicDetailObject, "mobilePhone">;
 
 export type RetrieveDetailsOptions = {
-    /** Begin date of transaction details query */
+    /** Begin date of transaction details query. Eg format: yyyyMMdd, 20210905  */
     beginDate: string;
 
-    /** End date of transaction details query */
+    /** End date of transaction details query. Eg format:  yyyyMMdd, 20210906 */
     endDate: string;
 
     /** The unique transaction identifier for a particular payment order provided by each vending client. 

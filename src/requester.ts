@@ -19,8 +19,6 @@ import { IFtpClient } from "./types/ftpClient";
 import { Readable } from "stream";
 import { createArrayCsvStringifier } from "csv-writer";
 
-//import { myXml } from "./test";
-
 export default class Requester implements IRequester {
     private xmlParser: Parser;
     private xmlBuilder: Builder;
@@ -139,12 +137,7 @@ export default class Requester implements IRequester {
             }
 
             const parsedXml = await this.parseXml(resp.data);
-
-            //return the data object
             return parsedXml.data;
-
-            // const parsedXml = await this.parseXml(myXml);
-            // return parsedXml.data;
         } catch (error) {
             switch (true) {
                 case error instanceof IkejaElectricError: {

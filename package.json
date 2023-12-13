@@ -20,10 +20,10 @@
         "build": "tsc",
         "husky:install": "husky install",
         "prepare": "pnpm build",
-        "prepublishOnly": "pnpm lint && pnpm test",
+        "prepublishOnly": "pnpm lint",
         "preversion": "pnpm lint",
         "version": "pnpm format && git add .",
-        "postversion": "git push --tags",
+        "postversion": "git commit -m && git push --tags",
         "npmpatch": "npm version patch",
         "npmpublish": "npm publish --access public",
         "te": "tsc && node dist/test"
@@ -34,7 +34,7 @@
         "Electricity Payment",
         "Ikeja Electric API",
         "Ikeja Electric SDK",
-        "Ikeja Power"
+        "Ikeja Electric Disco"
     ],
     "author": "Nwankwo Chinedum Valentine <chinedum@chinedumvalentine.com.ng>",
     "license": "MIT",

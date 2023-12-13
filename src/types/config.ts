@@ -25,3 +25,7 @@ export type RequesterConfig = {
     sftpHost: string;
     sftpPort: number;
 } & IkejaElectricOptions;
+
+export type SettingOptions = {
+    sandbox?: boolean;
+};

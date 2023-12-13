@@ -1,16 +1,31 @@
-import { IkejaElectricOptions, RequesterConfig } from "src/types/config";
+import {
+    IkejaElectricOptions,
+    RequesterConfig,
+    SettingOptions,
+} from "src/types/config";
 import * as Config from "../config";
 
-export const buildConfig = (options: IkejaElectricOptions): RequesterConfig => {
+export const buildConfig = (
+    options: IkejaElectricOptions,
+    settingsOptions?: SettingOptions,
+): RequesterConfig => {
     return {
         appId: options.appId,
-        cisHost: Config.CIS_HOST,
+        cisHost: settingsOptions.sandbox
+            ? Config.SANDBOX_CIS_HOST
+            : Config.CIS_HOST,
         cisPassword: options.cisPassword,
         sftpPassword: options.sftpPassword,
-        cisPort: Config.CIS_PORT,
+        cisPort: settingsOptions.sandbox
+            ? Config.SANDBOX_CIS_PORT
+            : Config.CIS_PORT,
         sftpUsername: options.sftpUsername,
-        sftpPort: Config.SFTP_PORT,
-        sftpHost: Config.SFTP_HOST,
+        sftpPort: settingsOptions.sandbox
+            ? Config.SANDBOX_SFTP_PORT
+            : Config.SFTP_PORT,
+        sftpHost: settingsOptions.sandbox
+            ? Config.SANDBOX_SFTP_HOST
+            : Config.SFTP_HOST,
     };
 };
 

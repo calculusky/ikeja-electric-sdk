@@ -11,14 +11,14 @@ export class HttpClient implements IHttpsClient {
     async sendRequest(
         options: SendRequestOptions,
     ): Promise<IHttpsClientResponse> {
-        console.log(options, "****************");
+        // console.log(options, "****************");
         return new Promise((resolve, reject) => {
             const req = request({
-                hostname: "restapi.adequateshop.com", //options.hostname,
-                path: "/api/Traveler?page=6",
-                method: "GET", //options.method,
+                hostname: options.hostname, //"restapi.adequateshop.com",
+                // path: "/api/Traveler?page=6",
+                method: options.method,
                 headers: options.headers,
-                // port: options.port,
+                port: options.port,
             });
 
             req.on("response", (response: IncomingMessage) => {
