@@ -2,7 +2,7 @@ import {
     IkejaElectricOptions,
     RequesterConfig,
     SettingOptions,
-} from "src/types/config";
+} from "../types/config";
 import * as Config from "../config";
 
 export const buildConfig = (

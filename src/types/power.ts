@@ -1,3 +1,4 @@
+import { Optional } from ".";
 import { ServiceCode } from "./requester";
 
 export type ConfirmationType = "MN" | "CN";

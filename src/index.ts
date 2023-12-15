@@ -7,6 +7,8 @@ import { IkejaElectricOptions, SettingOptions } from "./types/config";
 import { IPower } from "./types/power";
 import { IReconciler } from "./types/reconciler";
 import * as Util from "./utils";
+export * from "./errors";
+export { IkejaElectricOptions } from "./types/config";
 
 export default class IkejaElectric {
     readonly power: IPower;
