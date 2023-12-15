@@ -1,9 +1,11 @@
+import MiscAPI from "./api/misc";
 import PowerAPI from "./api/power";
 import { ReconcilerAPI } from "./api/reconciler";
 import FtpClient from "./ftpClient";
 import { HttpClient } from "./httpClient";
 import Requester from "./requester";
 import { IkejaElectricOptions, SettingOptions } from "./types/config";
+import { IMisc } from "./types/misc";
 import { IPower } from "./types/power";
 import { IReconciler } from "./types/reconciler";
 import * as Util from "./utils";
@@ -13,6 +15,7 @@ export { IkejaElectricOptions } from "./types/config";
 export default class IkejaElectric {
     readonly power: IPower;
     readonly reconciler: IReconciler;
+    readonly misc: IMisc;
     private requester: Requester;
     constructor(
         protected ikejaElectricOptions: IkejaElectricOptions,
@@ -43,5 +46,6 @@ export default class IkejaElectric {
 
         this.power = new PowerAPI(this.requester);
         this.reconciler = new ReconcilerAPI(this.requester);
+        this.misc = new MiscAPI(this.requester);
     }
 }
