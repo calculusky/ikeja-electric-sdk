@@ -74,7 +74,7 @@ export type UploadReconciliationFileOptions = {
     notify?: boolean;
 };
 
-export type CsvFileContent = {
+export type CSVFileContent = {
     firstRow: CsvFirstRowContent;
     records: CsvFileBodyContent[];
 };
@@ -112,7 +112,7 @@ export type IReconciler = {
      * @param options
      */
     uploadReconciliationFile(
-        dataObject: CsvFileContent,
+        dataObject: CSVFileContent,
         options?: UploadReconciliationFileOptions,
     ): Promise<FtpResponse>;
 };

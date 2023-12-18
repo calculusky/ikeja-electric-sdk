@@ -367,6 +367,10 @@ export type AcknowledgementOptions = {
     purchaseStatus: PaymentStatus;
 };
 
+export type PurchaseCreditConfigOptions = {
+    acknowledge?: boolean;
+};
+
 type GetResponseWithConditionObject<T extends ConfirmationType | Kind> =
     T extends keyof ResponseWithConditionObjectMap
         ? ResponseWithConditionObjectMap[T]
@@ -420,6 +424,7 @@ export interface IPower {
      */
     purchaseCredit<K extends Kind>(
         options: PurchaseCreditOptions<K>,
+        configOptions?: PurchaseCreditConfigOptions,
     ): Promise<GetResponseObject<ServiceCode.PurchaseCredit, undefined, K>>;
 
     /**

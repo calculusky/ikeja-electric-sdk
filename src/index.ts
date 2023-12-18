@@ -11,6 +11,11 @@ import { IReconciler } from "./types/reconciler";
 import * as Util from "./utils";
 export * from "./errors";
 export { IkejaElectricOptions } from "./types/config";
+export {
+    CSVFileContent,
+    CsvFileBodyContent,
+    CsvFirstRowContent,
+} from "./types/reconciler";
 
 export default class IkejaElectric {
     readonly power: IPower;

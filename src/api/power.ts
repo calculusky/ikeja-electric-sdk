@@ -14,13 +14,25 @@ export default class PowerAPI extends BaseAPI implements p.IPower {
 
     async purchaseCredit<K extends p.Kind>(
         options: p.PurchaseCreditOptions<K>,
+        configOptions: p.PurchaseCreditConfigOptions = { acknowledge: false },
     ): Promise<
         p.GetResponseObject<r.ServiceCode.PurchaseCredit, undefined, K>
     > {
-        return await this.send({
+        const response = (await this.send({
             serviceCode: r.ServiceCode.PurchaseCredit,
             jsonRequestBody: options,
-        });
+        })) as p.GetResponseObject<r.ServiceCode.PurchaseCredit, undefined, K>;
+
+        if (configOptions.acknowledge) {
+            await this.acknowledge({
+                amountTendered: options.amountTendered,
+                orderNO: options.orderNO,
+                purchaseStatus: "SUCCESS",
+                receiptNO: response.receiptNO,
+            });
+        }
+
+        return response;
     }
 
     async reprint<C extends p.ConfirmationType>(
