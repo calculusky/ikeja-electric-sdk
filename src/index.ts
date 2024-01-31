@@ -17,6 +17,8 @@ export {
     CsvFirstRowContent,
 } from "./types/reconciler";
 
+process.env["NODE_TLS_REJECT_UNAUTHORIZED"] = "0"; //TODO: handle cert
+
 export default class IkejaElectric {
     readonly power: IPower;
     readonly reconciler: IReconciler;

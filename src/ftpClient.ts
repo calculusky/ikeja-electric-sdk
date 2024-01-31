@@ -13,7 +13,8 @@ export default class FtpClient implements IFtpClient {
             host: options.host,
             user: options.username,
             password: options.password,
-            secure: false, // Set to true if using FTPS
+            secure: true, // Set to true if using FTPS
+            //  secureOptions: {}
         });
 
         return await this.client.uploadFrom(

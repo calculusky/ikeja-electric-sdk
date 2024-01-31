@@ -4,32 +4,29 @@ import {
     IHttpsClientResponse,
     SendRequestOptions,
 } from "./types/httpClient";
-import { request } from "http";
+import { request } from "https";
 import { IkejaElectricError } from "./errors";
 
 export class HttpClient implements IHttpsClient {
     async sendRequest(
         options: SendRequestOptions,
     ): Promise<IHttpsClientResponse> {
-        // console.log(options, "****************");
+        // console.log(options.data, "** d **");
         return new Promise((resolve, reject) => {
             const req = request({
-                hostname: options.hostname, //"restapi.adequateshop.com",
-                // path: "/api/Traveler?page=6",
+                hostname: options.hostname,
+                path: options.path,
                 method: options.method,
                 headers: options.headers,
                 port: options.port,
             });
-
             req.on("response", (response: IncomingMessage) => {
                 resolve(new HttpsClientResponse(response));
             });
             req.on("error", (error) => {
                 reject(error);
             });
-
             req.write(options.data);
-
             req.end();
         });
     }
@@ -47,10 +44,10 @@ class HttpsClientResponse implements IHttpsClientResponse {
     }
 
     private buildResponse() {
-        let resp = "";
+        let respData = "";
         this.response.setEncoding("utf8");
         this.response.on("data", (chunk) => {
-            resp += chunk.toString();
+            respData += chunk.toString();
         });
 
         this.response.on("error", (error) => {
@@ -68,7 +65,7 @@ class HttpsClientResponse implements IHttpsClientResponse {
                 this.error = err;
                 return this.error;
             }
-            this.data = resp;
+            this.data = respData;
         });
     }
 }

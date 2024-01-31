@@ -45,7 +45,7 @@ export default class Requester implements IRequester {
         //TODO: test if pretty options set to true with newline works else set pretty to false
         this.xmlBuilder = new Builder({
             rootName: this.xmlRootName,
-            headless: false,
+            headless: true,
         });
     }
 
@@ -109,20 +109,39 @@ export default class Requester implements IRequester {
         };
     }
 
+    private buildSOAPXmlRequest(xmlRequestData: string) {
+        return `<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:lon="http://www.longshine.com">
+                    <soapenv:Header/>
+                    <soapenv:Body>
+                        <lon:service>
+                            <requestXml><![CDATA[${xmlRequestData}]]></requestXml>
+                        </lon:service>
+                    </soapenv:Body>
+                </soapenv:Envelope>`;
+    }
+
+    private async parseResponseWithList(jsonResponseData: Record<string, any>) {
+        const listElement = `<list>${jsonResponseData.list}</list>`;
+        const parsedList = await this.parseXml(listElement);
+        jsonResponseData.list = parsedList.index;
+    }
+
     async sendAPIRequest(options: JsonRequestPayload) {
         try {
-            const xmlData = this.buildXml({
+            const xmlRequestData = this.buildXml({
                 jsonRequestBody: options.jsonRequestBody,
                 serviceCode: options.serviceCode,
             });
+
             const resp = await this.httpClient.sendRequest({
                 hostname: this.config.cisHost,
                 method: "POST",
                 port: this.config.cisPort,
+                path: "/superEdge/services/SuperEdgeService",
                 headers: {
                     "Content-Type": "application/xml",
                 },
-                data: xmlData,
+                data: this.buildSOAPXmlRequest(xmlRequestData),
             });
 
             if (resp.error) {
@@ -136,8 +155,32 @@ export default class Requester implements IRequester {
                 throw err;
             }
 
-            const parsedXml = await this.parseXml(resp.data);
-            return parsedXml.data;
+            const xmlResponseData = resp.data
+                .replace(/&lt;/g, "<")
+                .replace(/&gt;/g, ">");
+
+            console.log(xmlResponseData, "*************** RES ************");
+
+            const parsedXml = await this.parseXml(xmlResponseData);
+
+            const jsonResponse =
+                parsedXml["soap:Body"]["ns2:serviceResponse"]["return"][
+                    "PayWsResponse"
+                ];
+
+            if (jsonResponse.returnCode !== "000") {
+                const err = new IkejaElectricError(
+                    jsonResponse.message ?? "Something went wrong",
+                );
+                err.status = +jsonResponse.returnCode ?? 500;
+                throw err;
+            }
+
+            if (jsonResponse.data && jsonResponse.data.list) {
+                await this.parseResponseWithList(jsonResponse.data);
+            }
+
+            return jsonResponse.data;
         } catch (error) {
             switch (true) {
                 case error instanceof IkejaElectricError: {
@@ -162,6 +205,8 @@ export default class Requester implements IRequester {
             // Create a CSV stringifier
             const csvStringifier = createArrayCsvStringifier({ header: [] });
             const csvString = csvStringifier.stringifyRecords(options.data);
+
+            console.log(this.config);
 
             // Convert CSV string to readable stream
             const csvStream = Readable.from(csvString);

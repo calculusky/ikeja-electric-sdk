@@ -5,7 +5,7 @@ export enum ServiceCode {
     PurchaseCredit = "PurchaseCredit",
     Reprint = "Reprint",
     Acknowledge = "Acknowledge",
-    RetrieveDetails = "RetrieveDetails",
+    RetrieveDetails = "RetriveDetails",
     NotifyAutoReconciliation = "NotifyAutoReconciliation",
 }
 

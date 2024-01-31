@@ -313,7 +313,7 @@ export type RetrieveDetailsOptions = {
 
     /** The unique transaction identifier for a particular payment order provided by each vending client. 
         Generation rules: yyyyMMddHHmmssSSS+appID(last 3 digits)+serial number (6 digits) , for example: 20210910093045123001000001 */
-    orderNO: string;
+    orderNO?: string;
 };
 
 export type RetrieveDetailsResponseObject = {

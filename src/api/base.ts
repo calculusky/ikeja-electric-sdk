@@ -62,7 +62,8 @@ export default class BaseAPI {
                     "minimumVend",
                 ];
                 Util.objectStringValuesToFloat(data, keys);
-                data.minVendBreakdown = data.list?.index;
+                data.minVendBreakdown = data.list;
+                delete data.list;
                 return data;
             }
 
@@ -103,7 +104,8 @@ export default class BaseAPI {
                     "amountTendered",
                 ];
                 Util.objectStringValuesToFloat(data, keys);
-                data.creditBreakdown = data.list?.index;
+                data.creditBreakdown = data.list;
+                delete data.list;
                 return data;
             }
 
@@ -119,26 +121,27 @@ export default class BaseAPI {
                     "outstandingDebt",
                 ];
                 Util.objectStringValuesToFloat(data, keys);
-                data.minVendBreakdown = data.list?.index;
+                data.minVendBreakdown = data.list;
+                delete data.list;
                 return data;
             }
         }
     }
 
     private normalizeReprint(data: Record<string, any>) {
-        if (!data || !data.list || !data.list.index) {
+        if (!data || !data.list) {
             data = [];
             return data;
         }
 
         const keys = ["amountTendered"];
 
-        if (!Array.isArray(data.list.index)) {
-            Util.objectStringValuesToFloat(data.list.index, keys);
-            return [data.list.index];
+        if (!Array.isArray(data.list)) {
+            Util.objectStringValuesToFloat(data.list, keys);
+            return [data.list];
         }
 
-        const modData = data.list.index.map((p: any) => {
+        const modData = data.list.map((p: any) => {
             return Util.objectStringValuesToFloat(p, keys);
         });
         return modData;

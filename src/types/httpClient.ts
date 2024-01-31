@@ -9,6 +9,7 @@ export type HttpHeaders = {
 export interface SendRequestOptions {
     hostname: string;
     port: number;
+    path: string;
     method: HttpMethod;
     headers: HttpHeaders;
     data: string;
