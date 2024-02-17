@@ -5,11 +5,11 @@ import * as dayjs from "dayjs";
 
 export class ReconcilerAPI extends BaseAPI implements rc.IReconciler {
     private buildFilePath() {
-        return `Agency/${this.getConfig().appId}`;
+        return `/Agency/${this.getConfig().appId}`;
     }
 
     private buildFileName() {
-        const dateObj = new Date();
+        const dateObj = dayjs().subtract(1, "day");
         const date = dayjs(dateObj).format("YYYYMMDD");
         return `${this.getConfig().appId}_COLLECTION_${date}.csv`;
     }
@@ -18,7 +18,7 @@ export class ReconcilerAPI extends BaseAPI implements rc.IReconciler {
         return {
             clientID: this.getConfig().appId,
             fileType: "COLLECTION",
-            filePath: this.buildFilePath(),
+            filePath: this.getConfig().appId, //this.buildFilePath(),
             fileName: this.buildFileName(),
         };
     }
@@ -61,7 +61,7 @@ export class ReconcilerAPI extends BaseAPI implements rc.IReconciler {
 
     async uploadReconciliationFile(
         dataObject: rc.CSVFileContent,
-        options: rc.UploadReconciliationFileOptions = { notify: true },
+        options: rc.UploadReconciliationFileOptions = { notify: false },
     ) {
         const remoteFilePath = `${this.buildFilePath()}/${this.buildFileName()}`;
         const notifyOptions = this.buildReconciliationPayload();
@@ -72,7 +72,8 @@ export class ReconcilerAPI extends BaseAPI implements rc.IReconciler {
             remoteFilePath: remoteFilePath,
         });
         if (options.notify) {
-            await this.notifyAutoReconciliation(notifyOptions);
+            const u = await this.notifyAutoReconciliation(notifyOptions);
+            console.log(u, "*******UP*******");
         }
         return uploaded;
     }

@@ -1,7 +1,7 @@
 import MiscAPI from "./api/misc";
 import PowerAPI from "./api/power";
 import { ReconcilerAPI } from "./api/reconciler";
-import FtpClient from "./ftpClient";
+import FtpClient from "./sftpClient";
 import { HttpClient } from "./httpClient";
 import Requester from "./requester";
 import { IkejaElectricOptions, SettingOptions } from "./types/config";

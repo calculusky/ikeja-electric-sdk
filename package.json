@@ -49,8 +49,8 @@
     "devDependencies": {
         "@commitlint/cli": "^18.4.3",
         "@commitlint/config-conventional": "^18.4.3",
-        "@types/easy-soap-request": "^4.1.4",
         "@types/node": "^18.18.2",
+        "@types/ssh2-sftp-client": "^9.0.3",
         "@types/xml2js": "^0.4.14",
         "@typescript-eslint/eslint-plugin": "^6.13.1",
         "@typescript-eslint/parser": "^6.13.1",
@@ -63,11 +63,9 @@
         "typescript": "^5.3.2"
     },
     "dependencies": {
-        "basic-ftp": "^5.0.3",
         "csv-writer": "^1.6.0",
         "dayjs": "^1.11.10",
-        "easy-soap-request": "^5.5.0",
-        "soap": "^1.0.0",
+        "ssh2-sftp-client": "^10.0.3",
         "xml2js": "^0.6.2"
     }
 }

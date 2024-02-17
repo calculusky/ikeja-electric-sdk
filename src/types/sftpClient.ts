@@ -9,6 +9,6 @@ export type UploadFileOptions = {
     remoteFilePath: string;
 };
 
-export interface IFtpClient {
-    uploadFile(options: UploadFileOptions): Promise<any>;
+export interface ISFTPClient {
+    uploadFile(options: UploadFileOptions): Promise<string>;
 }

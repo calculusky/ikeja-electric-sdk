@@ -30,15 +30,12 @@ export type UploadReconciliationFileOptions = {
     remoteFilePath: string;
 };
 
-export type FtpResponse = {
-    readonly message: string;
-    readonly code: number;
-};
+export type SFtpResponse = string;
 
 export interface IRequester {
     getConfig(): RequesterConfig;
     sendAPIRequest(options: JsonRequestPayload): Promise<Record<string, any>>;
     uploadReconciliationFile(
         options: UploadReconciliationFileOptions,
-    ): Promise<FtpResponse>;
+    ): Promise<SFtpResponse>;
 }

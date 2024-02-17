@@ -11,7 +11,6 @@ export class HttpClient implements IHttpsClient {
     async sendRequest(
         options: SendRequestOptions,
     ): Promise<IHttpsClientResponse> {
-        // console.log(options.data, "** d **");
         return new Promise((resolve, reject) => {
             const req = request({
                 hostname: options.hostname,

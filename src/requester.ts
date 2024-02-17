@@ -3,7 +3,7 @@ import { IkejaElectricError } from "./errors";
 import { RequesterConfig } from "./types/config";
 import { IHttpsClient } from "./types/httpClient";
 import {
-    FtpResponse,
+    SFtpResponse,
     HeaderBuilderOptions,
     IRequester,
     JsonRequestHeader,
@@ -15,7 +15,7 @@ import { Builder, Parser } from "xml2js";
 import { createHash } from "crypto";
 import * as dayjs from "dayjs";
 import * as Util from "./utils";
-import { IFtpClient } from "./types/ftpClient";
+import { ISFTPClient } from "./types/sftpClient";
 import { Readable } from "stream";
 import { createArrayCsvStringifier } from "csv-writer";
 
@@ -27,7 +27,7 @@ export default class Requester implements IRequester {
     private readonly xmlRootNameForSignatureBuilder = "data";
     constructor(
         private httpClient: IHttpsClient,
-        private ftpClient: IFtpClient,
+        private sftpClient: ISFTPClient,
         private config: RequesterConfig,
     ) {
         this.decodedPassword = this.decodeBase64Password();
@@ -159,10 +159,7 @@ export default class Requester implements IRequester {
                 .replace(/&lt;/g, "<")
                 .replace(/&gt;/g, ">");
 
-            console.log(xmlResponseData, "*************** RES ************");
-
             const parsedXml = await this.parseXml(xmlResponseData);
-
             const jsonResponse =
                 parsedXml["soap:Body"]["ns2:serviceResponse"]["return"][
                     "PayWsResponse"
@@ -200,18 +197,14 @@ export default class Requester implements IRequester {
     }
     async uploadReconciliationFile(
         options: UploadReconciliationFileOptions,
-    ): Promise<FtpResponse> {
+    ): Promise<SFtpResponse> {
         try {
             // Create a CSV stringifier
             const csvStringifier = createArrayCsvStringifier({ header: [] });
             const csvString = csvStringifier.stringifyRecords(options.data);
-
-            console.log(this.config);
-
-            // Convert CSV string to readable stream
             const csvStream = Readable.from(csvString);
 
-            const resp = await this.ftpClient.uploadFile({
+            const resp = await this.sftpClient.uploadFile({
                 host: this.config.sftpHost,
                 port: this.config.sftpPort,
                 username: this.config.sftpUsername,

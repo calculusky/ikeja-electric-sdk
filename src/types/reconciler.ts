@@ -1,5 +1,5 @@
 import { Kind, PaidType } from "./power";
-import { FtpResponse } from "./requester";
+import { SFtpResponse } from "./requester";
 
 export type NotifyAutoReconciliationObject = {
     /** Vending client ID, a unique vending client ID assigned to each vending client by CIS system. */
@@ -114,5 +114,5 @@ export type IReconciler = {
     uploadReconciliationFile(
         dataObject: CSVFileContent,
         options?: UploadReconciliationFileOptions,
-    ): Promise<FtpResponse>;
+    ): Promise<SFtpResponse>;
 };
