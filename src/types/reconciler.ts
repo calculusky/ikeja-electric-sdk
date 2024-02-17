@@ -70,7 +70,7 @@ export type CsvFirstRowContent = {
 };
 
 export type UploadReconciliationFileOptions = {
-    /** Trigger auto transaction reconciliation after a successful file upload. Default is true */
+    /** Trigger auto transaction reconciliation after a successful file upload. Default is false */
     notify?: boolean;
 };
 
