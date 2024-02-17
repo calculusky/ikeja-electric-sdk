@@ -129,7 +129,7 @@ await ie.power.acknowledge({
 
 **Upload reconciliation file**
 
-By default, after a successful upload, the notify auto reconciliation would be triggered by the SDK. However, this can be disabled by setting the notify options to false.
+This method provides the interface to upload reconciliation file to the sftp server. It also has a notify option. When the notify option is set, the interface automatically triggers the notify-auto-reconciliation service after a successful file upload. Default is false.
 
 ```ts
   const response = await ie.reconciler.uploadReconciliationFile({
@@ -151,7 +151,16 @@ By default, after a successful upload, the notify auto reconciliation would be t
                 },
                 ...
             ],
-       });
+       }, { notify: true },);
 
         console.log(response)
+```
+
+**Notify Auto Reconciliation**
+
+This method provides the functionality to manually notify the CIS Server after a successful reconciliation file upload.
+Note: This method is called immediately after the uploadReconciliationFile method runs with the notify options set to false.
+
+```ts
+await ie.reconciler.notifyAutoReconciliation();
 ```
