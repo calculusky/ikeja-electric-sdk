@@ -1,6 +1,6 @@
 {
     "name": "@calculusky/ikeja-electric-sdk",
-    "version": "1.0.1",
+    "version": "1.0.0",
     "description": "Ikeja Electric SDK for Nodejs",
     "main": "dist/index.js",
     "types": "dist/index.d.ts",
@@ -22,8 +22,8 @@
         "prepare": "pnpm build",
         "prepublishOnly": "pnpm lint",
         "preversion": "pnpm lint",
-        "version": "pnpm format && git add .",
-        "postversion": "git commit -m && git push --tags",
+        "version": "pnpm format",
+        "postversion": "git push --tags",
         "npmpatch": "npm version patch",
         "npmpublish": "npm publish --access public"
     },
