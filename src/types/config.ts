@@ -1,6 +1,10 @@
 type HttpRequestConfig = {
     /** password assigned by server  */
     cisPassword: string;
+    /** CIS HTTP Host */
+    cisHost: string;
+    /** CIS HTTP port */
+    cisPort: number;
 };
 
 type SftpRequestConfig = {
@@ -8,6 +12,10 @@ type SftpRequestConfig = {
     sftpUsername: string;
     /** SFTP password assigned from server */
     sftpPassword: string;
+    /** SFTP Host */
+    sftpHost: string;
+    /** SFTP port */
+    sftpPort: number;
 };
 
 type IdConfig = {
@@ -25,7 +33,3 @@ export type RequesterConfig = {
     sftpHost: string;
     sftpPort: number;
 } & IkejaElectricOptions;
-
-export type SettingOptions = {
-    sandbox?: boolean;
-};

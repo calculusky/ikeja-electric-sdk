@@ -1,10 +1,10 @@
 import MiscAPI from "./api/misc";
 import PowerAPI from "./api/power";
 import { ReconcilerAPI } from "./api/reconciler";
-import FtpClient from "./sftpClient";
+import SFtpClient from "./sftpClient";
 import { HttpClient } from "./httpClient";
 import Requester from "./requester";
-import { IkejaElectricOptions, SettingOptions } from "./types/config";
+import { IkejaElectricOptions } from "./types/config";
 import { IMisc } from "./types/misc";
 import { IPower } from "./types/power";
 import { IReconciler } from "./types/reconciler";
@@ -24,23 +24,21 @@ export default class IkejaElectric {
     readonly reconciler: IReconciler;
     readonly misc: IMisc;
     private requester: Requester;
-    constructor(
-        protected ikejaElectricOptions: IkejaElectricOptions,
-        protected settingsOptions: SettingOptions = { sandbox: false },
-    ) {
-        const config = Util.buildConfig(
-            {
-                appId: this.ikejaElectricOptions.appId,
-                cisPassword: this.ikejaElectricOptions.cisPassword,
-                sftpPassword: this.ikejaElectricOptions.sftpPassword,
-                sftpUsername: this.ikejaElectricOptions.sftpUsername,
-            },
-            settingsOptions,
-        );
+    constructor(protected ikejaElectricOptions: IkejaElectricOptions) {
+        const config = Util.buildConfig({
+            appId: ikejaElectricOptions.appId,
+            cisPassword: ikejaElectricOptions.cisPassword,
+            sftpPassword: ikejaElectricOptions.sftpPassword,
+            sftpUsername: ikejaElectricOptions.sftpUsername,
+            cisHost: ikejaElectricOptions.cisHost,
+            cisPort: ikejaElectricOptions.cisPort,
+            sftpHost: ikejaElectricOptions.sftpHost,
+            sftpPort: ikejaElectricOptions.sftpPort,
+        });
 
         const httpClient = new HttpClient();
-        const ftpClient = new FtpClient();
-        this.requester = new Requester(httpClient, ftpClient, {
+        const sftpClient = new SFtpClient();
+        this.requester = new Requester(httpClient, sftpClient, {
             appId: config.appId,
             cisHost: config.cisHost,
             cisPassword: config.cisPassword,

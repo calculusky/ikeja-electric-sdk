@@ -43,7 +43,11 @@ const ie = new IkejaElectric({
     appId: "YOUR_APPID",
     cisPassword: "YOUR_PASSWORD",
     sftpPassword: "YOUR_FTP_PASSWORD",
-    sftpUsername: "YOUR_FTP_USERNAME",
+    sftpUsername: "YOUR_SFTP_USERNAME",
+    cisHost: "YOUR_CIS_HTTP_HOST",
+    cisPort: "YOUR_CIS_HTTP_PORT",
+    sftpHost: "YOUR_SFTP_HOST",
+    sftpPort: "YOUR_SFTP_PORT",
 });
 ```
 
