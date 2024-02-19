@@ -1,12 +1,20 @@
 import * as r from "../types/requester";
 import * as p from "../types/power";
 import * as Util from "../utils";
+import * as c from "../types/config";
 
 export default class BaseAPI {
-    constructor(private requester: r.IRequester) {}
+    constructor(
+        private requester: r.IRequester,
+        private settings?: c.SDKSettings,
+    ) {}
 
     protected getConfig() {
         return this.requester.getConfig();
+    }
+
+    protected getSDKSettings() {
+        return this.settings;
     }
 
     protected async send<R>(options: r.JsonRequestPayload): Promise<R> {

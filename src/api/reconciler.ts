@@ -4,8 +4,14 @@ import * as rc from "../types/reconciler";
 import * as dayjs from "dayjs";
 
 export class ReconcilerAPI extends BaseAPI implements rc.IReconciler {
-    private buildFilePath() {
+    private buildFileUploadPath() {
+        if (this.getSDKSettings().env === "production") {
+            return `/${this.getConfig().appId}`;
+        }
         return `/Agency/${this.getConfig().appId}`;
+    }
+    private buildNotifyAutoReconciliationFilePath() {
+        return `/datadrive/sftp/superedge${this.buildFileUploadPath()}`;
     }
 
     private buildFileName() {
@@ -18,14 +24,14 @@ export class ReconcilerAPI extends BaseAPI implements rc.IReconciler {
         return {
             clientID: this.getConfig().appId,
             fileType: "COLLECTION",
-            filePath: this.getConfig().appId, //this.buildFilePath(),
+            filePath: this.buildNotifyAutoReconciliationFilePath(),
             fileName: this.buildFileName(),
         };
     }
 
     async notifyAutoReconciliation(
         notifyObject?: rc.NotifyAutoReconciliationObject,
-    ): Promise<boolean> {
+    ): Promise<void> {
         const reconcileOptions = notifyObject
             ? notifyObject
             : this.buildReconciliationPayload();
@@ -63,17 +69,15 @@ export class ReconcilerAPI extends BaseAPI implements rc.IReconciler {
         dataObject: rc.CSVFileContent,
         options: rc.UploadReconciliationFileOptions = { notify: false },
     ) {
-        const remoteFilePath = `${this.buildFilePath()}/${this.buildFileName()}`;
-        const notifyOptions = this.buildReconciliationPayload();
-
+        const remoteFilePath = `${this.buildFileUploadPath()}/${this.buildFileName()}`;
         const csvData = this.buildCsvData(dataObject);
         const uploaded = await this.uploadFile({
             data: csvData,
             remoteFilePath: remoteFilePath,
         });
         if (options.notify) {
-            const u = await this.notifyAutoReconciliation(notifyOptions);
-            console.log(u, "*******UP*******");
+            const notifyOptions = this.buildReconciliationPayload();
+            await this.notifyAutoReconciliation(notifyOptions);
         }
         return uploaded;
     }

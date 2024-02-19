@@ -33,3 +33,8 @@ export type RequesterConfig = {
     sftpHost: string;
     sftpPort: number;
 } & IkejaElectricOptions;
+
+export type SDKSettings = {
+    /** Set the environment for the SDK Usage. values: production or development */
+    env: "production" | "development";
+};

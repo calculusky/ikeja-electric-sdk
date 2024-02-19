@@ -39,16 +39,19 @@ const IkejaElectric = require("@calculusky/ikeja-electric-sdk").default;
 ```ts
 import IkejaElectric from "@calculusky/ikeja-electric-sdk";
 
-const ie = new IkejaElectric({
-    appId: "YOUR_APPID",
-    cisPassword: "YOUR_PASSWORD",
-    sftpPassword: "YOUR_FTP_PASSWORD",
-    sftpUsername: "YOUR_SFTP_USERNAME",
-    cisHost: "YOUR_CIS_HTTP_HOST",
-    cisPort: "YOUR_CIS_HTTP_PORT",
-    sftpHost: "YOUR_SFTP_HOST",
-    sftpPort: "YOUR_SFTP_PORT",
-});
+const ie = new IkejaElectric(
+    {
+        appId: "YOUR_APPID",
+        cisPassword: "YOUR_PASSWORD",
+        sftpPassword: "YOUR_FTP_PASSWORD",
+        sftpUsername: "YOUR_SFTP_USERNAME",
+        cisHost: "YOUR_CIS_HTTP_HOST",
+        cisPort: "YOUR_CIS_HTTP_PORT",
+        sftpHost: "YOUR_SFTP_HOST",
+        sftpPort: "YOUR_SFTP_PORT",
+    },
+    { env: "development" },
+);
 ```
 
 Note: For sandbox environment, set the sandbox option in the second argument of the SDK as seen below.
@@ -81,17 +84,20 @@ console.log(details);
 
 **Purchase Credit**
 
-Purchase credit after a successful account confirmation.
+Purchase credit after a successful account confirmation. To trigger acknowledgement automatically on a successful purchase, set the acknowledge option to true. Default is false.
 
 ```ts
-const response = await ie.power.purchaseCredit({
-    kind: "PREPAY",
-    accountType: "MD",
-    amountTendered: 45000,
-    orderNO: "20210910093045123001000001",
-    paidType: "POS",
-    requestNO: "6745548846",
-});
+const response = await ie.power.purchaseCredit(
+    {
+        kind: "PREPAY",
+        accountType: "MD",
+        amountTendered: 45000,
+        orderNO: "20210910093045123001000001",
+        paidType: "POS",
+        requestNO: "6745548846",
+    },
+    { acknowledge: true },
+);
 console.log(response);
 ```
 

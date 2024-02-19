@@ -104,7 +104,7 @@ export type IReconciler = {
      */
     notifyAutoReconciliation(
         notifyObject?: NotifyAutoReconciliationObject,
-    ): Promise<boolean>;
+    ): Promise<void>;
 
     /**
      * @description Upload daily transaction reconciliation file via an ftp client

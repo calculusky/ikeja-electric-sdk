@@ -4,7 +4,7 @@ import { ReconcilerAPI } from "./api/reconciler";
 import SFtpClient from "./sftpClient";
 import { HttpClient } from "./httpClient";
 import Requester from "./requester";
-import { IkejaElectricOptions } from "./types/config";
+import { IkejaElectricOptions, SDKSettings } from "./types/config";
 import { IMisc } from "./types/misc";
 import { IPower } from "./types/power";
 import { IReconciler } from "./types/reconciler";
@@ -17,14 +17,18 @@ export {
     CsvFirstRowContent,
 } from "./types/reconciler";
 
-process.env["NODE_TLS_REJECT_UNAUTHORIZED"] = "0"; //TODO: handle cert
-
 export default class IkejaElectric {
     readonly power: IPower;
     readonly reconciler: IReconciler;
     readonly misc: IMisc;
     private requester: Requester;
-    constructor(protected ikejaElectricOptions: IkejaElectricOptions) {
+    constructor(
+        protected ikejaElectricOptions: IkejaElectricOptions,
+        protected sdkSettings: SDKSettings,
+    ) {
+        if (sdkSettings.env === "development") {
+            process.env["NODE_TLS_REJECT_UNAUTHORIZED"] = "0";
+        }
         const config = Util.buildConfig({
             appId: ikejaElectricOptions.appId,
             cisPassword: ikejaElectricOptions.cisPassword,
@@ -50,7 +54,7 @@ export default class IkejaElectric {
         });
 
         this.power = new PowerAPI(this.requester);
-        this.reconciler = new ReconcilerAPI(this.requester);
+        this.reconciler = new ReconcilerAPI(this.requester, sdkSettings);
         this.misc = new MiscAPI(this.requester);
     }
 }
