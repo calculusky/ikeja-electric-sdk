@@ -39,19 +39,19 @@ const IkejaElectric = require("@calculusky/ikeja-electric-sdk").default;
 ```ts
 import IkejaElectric from "@calculusky/ikeja-electric-sdk";
 
-const ie = new IkejaElectric(
-    {
-        appId: "YOUR_APPID",
-        cisPassword: "YOUR_PASSWORD",
-        sftpPassword: "YOUR_FTP_PASSWORD",
-        sftpUsername: "YOUR_SFTP_USERNAME",
-        cisHost: "YOUR_CIS_HTTP_HOST",
-        cisPort: "YOUR_CIS_HTTP_PORT",
-        sftpHost: "YOUR_SFTP_HOST",
-        sftpPort: "YOUR_SFTP_PORT",
+const ie = new IkejaElectric({
+    appId: "YOUR_APPID",
+    cisPassword: "YOUR_PASSWORD",
+    sftpPassword: "YOUR_FTP_PASSWORD",
+    sftpUsername: "YOUR_SFTP_USERNAME",
+    cisHost: "YOUR_CIS_HTTP_HOST",
+    cisPort: "YOUR_CIS_HTTP_PORT",
+    sftpHost: "YOUR_SFTP_HOST",
+    sftpPort: "YOUR_SFTP_PORT",
+    settings: {
+        mode: "development",
     },
-    { env: "development" },
-);
+});
 ```
 
 Note: For sandbox environment, set the sandbox option in the second argument of the SDK as seen below.

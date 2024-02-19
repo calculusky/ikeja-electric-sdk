@@ -23,18 +23,20 @@ type IdConfig = {
     appId: string;
 };
 
+export type SDKSettings = {
+    /** Set the environment for the SDK Usage. values: production or development */
+    mode: "production" | "development";
+};
+
 export type IkejaElectricOptions = IdConfig &
     HttpRequestConfig &
-    SftpRequestConfig;
+    SftpRequestConfig & { settings: SDKSettings };
 
 export type RequesterConfig = {
     cisHost: string;
     cisPort: number;
     sftpHost: string;
     sftpPort: number;
-} & IkejaElectricOptions;
-
-export type SDKSettings = {
-    /** Set the environment for the SDK Usage. values: production or development */
-    env: "production" | "development";
-};
+} & IdConfig &
+    HttpRequestConfig &
+    SftpRequestConfig;

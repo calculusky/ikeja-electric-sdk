@@ -1,6 +1,8 @@
 import { IkejaElectricOptions, RequesterConfig } from "../types/config";
 
-export const buildConfig = (options: IkejaElectricOptions): RequesterConfig => {
+export const buildConfig = (
+    options: Omit<IkejaElectricOptions, "settings">,
+): RequesterConfig => {
     return {
         appId: options.appId,
         cisHost: options.cisHost,
