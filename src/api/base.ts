@@ -6,15 +6,15 @@ import * as c from "../types/config";
 export default class BaseAPI {
     constructor(
         private requester: r.IRequester,
-        private settings?: c.SDKSettings,
+        private config?: c.SDKConfig,
     ) {}
 
     protected getConfig() {
         return this.requester.getConfig();
     }
 
-    protected getSDKSettings() {
-        return this.settings;
+    protected getSDKConfig() {
+        return this.config;
     }
 
     protected async send<R>(options: r.JsonRequestPayload): Promise<R> {

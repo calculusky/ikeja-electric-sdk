@@ -1,6 +1,6 @@
 {
     "name": "@calculusky/ikeja-electric-sdk",
-    "version": "1.0.2",
+    "version": "1.0.1",
     "description": "Ikeja Electric SDK for Nodejs",
     "main": "dist/index.js",
     "types": "dist/index.d.ts",
@@ -24,8 +24,8 @@
         "preversion": "pnpm lint",
         "version": "pnpm format",
         "postversion": "git push --tags",
-        "npmpatch": "npm version patch",
-        "npmpublish": "npm publish --access public"
+        "patch": "npm version patch",
+        "publish": "npm publish --access public"
     },
     "keywords": [
         "Bill Payment",

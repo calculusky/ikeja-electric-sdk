@@ -48,25 +48,13 @@ const ie = new IkejaElectric({
     cisPort: "YOUR_CIS_HTTP_PORT",
     sftpHost: "YOUR_SFTP_HOST",
     sftpPort: "YOUR_SFTP_PORT",
-    settings: {
-        mode: "development",
+    config: {
+        mode: "development", //values: development or production
     },
 });
 ```
 
-Note: For sandbox environment, set the sandbox option in the second argument of the SDK as seen below.
-
-```ts
-const ie = new IkejaElectric(
-    {
-        appId: "YOUR_APPID",
-        cisPassword: "YOUR_PASSWORD",
-        sftpPassword: "YOUR_FTP_PASSWORD",
-        sftpUsername: "YOUR_FTP_USERNAME",
-    },
-    { sandbox: true },
-);
-```
+Note: For sandbox/development environment, set the mode in the config options above to development and pass the development options.
 
 ## API
 

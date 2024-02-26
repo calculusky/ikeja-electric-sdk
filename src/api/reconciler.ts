@@ -5,7 +5,7 @@ import * as dayjs from "dayjs";
 
 export class ReconcilerAPI extends BaseAPI implements rc.IReconciler {
     private buildFileUploadPath() {
-        if (this.getSDKSettings().mode === "production") {
+        if (this.getSDKConfig().mode === "production") {
             return `/${this.getConfig().appId}`;
         }
         return `/Agency/${this.getConfig().appId}`;

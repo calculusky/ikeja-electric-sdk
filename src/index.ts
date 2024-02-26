@@ -23,7 +23,7 @@ export default class IkejaElectric {
     readonly misc: IMisc;
     private requester: Requester;
     constructor(protected ikejaElectricOptions: IkejaElectricOptions) {
-        if (ikejaElectricOptions.settings.mode === "development") {
+        if (ikejaElectricOptions.config.mode === "development") {
             process.env["NODE_TLS_REJECT_UNAUTHORIZED"] = "0";
         }
         const config = Util.buildConfig({
@@ -53,7 +53,7 @@ export default class IkejaElectric {
         this.power = new PowerAPI(this.requester);
         this.reconciler = new ReconcilerAPI(
             this.requester,
-            ikejaElectricOptions.settings,
+            ikejaElectricOptions.config,
         );
         this.misc = new MiscAPI(this.requester);
     }
