@@ -24,8 +24,8 @@
         "preversion": "pnpm lint",
         "version": "pnpm format",
         "postversion": "git push --tags",
-        "patch": "npm version patch",
-        "publish": "npm publish --access public"
+        "npm:patch": "npm version patch",
+        "npm:publish": "npm publish --access public"
     },
     "keywords": [
         "Bill Payment",
