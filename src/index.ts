@@ -16,6 +16,13 @@ export {
     CsvFileBodyContent,
     CsvFirstRowContent,
 } from "./types/reconciler";
+export {
+    PaidType,
+    AccountType,
+    Kind,
+    ConfirmationType,
+    FeeBreakDownObject,
+} from "./types/power";
 
 export default class IkejaElectric {
     readonly power: IPower;

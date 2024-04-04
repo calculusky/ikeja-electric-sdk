@@ -2,7 +2,7 @@ import { Optional } from ".";
 import { ServiceCode } from "./requester";
 
 export type ConfirmationType = "MN" | "CN";
-type AccountType = "MD" | "NMD";
+export type AccountType = "MD" | "NMD";
 export type Kind = "POSTPAY" | "PREPAY";
 export type PaidType = "bankteller" | "cash" | "cheque" | "POS";
 type PaymentStatus = "SUCCESS" | "FAILED";
@@ -115,12 +115,21 @@ type FeeType =
     | "administrativeCharge"
     | "penalty";
 
-type MappedFeeType = {
-    [K in FeeType]: {
-        feederType: K;
-        feeAmount: number;
-    };
-}[FeeType][];
+// type MappedFeeType = {
+//     [K in FeeType]: {
+//         feeType: K;
+//         feeAmount: number;
+//     };
+// }[FeeType][];
+
+export type RawFeeBreakDown = {
+    feeType: FeeType;
+    feeAmount: string;
+};
+
+export type FeeBreakDownObject = {
+    [K in FeeType]: number;
+};
 
 export type ConfirmDetailsOptions<T extends ConfirmationType> = {
     /**
@@ -150,7 +159,7 @@ type ConfirmDetailsPrePaidResponseObject = {
        Note: The preset unit for the second credit purchase is 0.
      */
     minimumVend: number;
-    minVendBreakdown: MappedFeeType;
+    minVendBreakdown: FeeBreakDownObject;
 } & Optional<CustomerBasicDetailObject, "mobilePhone"> &
     CustomerOrganizationObject &
     Omit<MeterObject, "model" | "manuf"> &
@@ -222,7 +231,7 @@ export type PurchaseCreditPrepaidResponseObject = {
     kct?: string;
 
     /** Breakdown list of credit purchased by the customer */
-    creditBreakdown: MappedFeeType;
+    creditBreakdown: FeeBreakDownObject;
 
     /** The remaining amount of the wallet client in the CIS system. It will be returned when the client is a wallet client. If non-wallet client, it is not returned. */
     walletBalance: number;
@@ -368,6 +377,10 @@ export type AcknowledgementOptions = {
 };
 
 export type PurchaseCreditConfigOptions = {
+    /**
+     * Options to acknowledge payment after purchasing credit. Defaults to false
+     * @default false
+     */
     acknowledge?: boolean;
 };
 

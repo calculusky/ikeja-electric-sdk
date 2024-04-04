@@ -70,7 +70,7 @@ export default class BaseAPI {
                     "minimumVend",
                 ];
                 Util.objectStringValuesToFloat(data, keys);
-                data.minVendBreakdown = data.list;
+                data.minVendBreakdown = this.buildFeeBreakdown(data.list);
                 delete data.list;
                 return data;
             }
@@ -89,6 +89,13 @@ export default class BaseAPI {
                 return data;
             }
         }
+    }
+
+    private buildFeeBreakdown(data: p.RawFeeBreakDown[]): p.FeeBreakDownObject {
+        return data.reduce((hash, val) => {
+            hash[val.feeType] = +val.feeAmount;
+            return hash;
+        }, {} as p.FeeBreakDownObject);
     }
 
     private normalizePurchaseCredit<K extends p.Kind>(
@@ -111,8 +118,9 @@ export default class BaseAPI {
                     "totalUnits",
                     "amountTendered",
                 ];
+
                 Util.objectStringValuesToFloat(data, keys);
-                data.creditBreakdown = data.list;
+                data.creditBreakdown = this.buildFeeBreakdown(data.list);
                 delete data.list;
                 return data;
             }
