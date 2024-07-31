@@ -30,10 +30,10 @@ export default class IkejaElectric {
     readonly misc: IMisc;
     private requester: Requester;
     constructor(protected ikejaElectricOptions: IkejaElectricOptions) {
-        const rejectUnauthorized = ikejaElectricOptions.config
-            .rejectUnauthorized
-            ? ikejaElectricOptions.config.rejectUnauthorized
-            : false;
+        const rejectUnauthorized =
+            ikejaElectricOptions.config.rejectUnauthorized === false
+                ? false
+                : true;
         if (!rejectUnauthorized) {
             process.env["NODE_TLS_REJECT_UNAUTHORIZED"] = "0";
         }
