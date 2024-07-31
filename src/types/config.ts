@@ -26,6 +26,7 @@ type IdConfig = {
 export type SDKConfig = {
     /** Set the environment for the SDK Usage. values: production or development */
     mode: "production" | "development";
+    rejectUnauthorized?: boolean;
 };
 
 export type IkejaElectricOptions = IdConfig &

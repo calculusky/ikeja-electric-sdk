@@ -18,6 +18,7 @@ export class HttpClient implements IHttpsClient {
                 method: options.method,
                 headers: options.headers,
                 port: options.port,
+                rejectUnauthorized: false,
             });
             req.on("response", (response: IncomingMessage) => {
                 resolve(new HttpsClientResponse(response));
