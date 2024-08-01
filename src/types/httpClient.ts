@@ -25,3 +25,7 @@ export type IHttpsClientResponse = {
     error: IkejaElectricError | null;
     data: string;
 };
+
+export interface HttpRequestConfig {
+    rejectUnauthorized: boolean;
+}

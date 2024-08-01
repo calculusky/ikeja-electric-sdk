@@ -1,5 +1,6 @@
 import { IncomingHttpHeaders, IncomingMessage } from "http";
 import {
+    HttpRequestConfig,
     IHttpsClient,
     IHttpsClientResponse,
     SendRequestOptions,
@@ -8,6 +9,7 @@ import { request } from "https";
 import { IkejaElectricError } from "./errors";
 
 export class HttpClient implements IHttpsClient {
+    constructor(private config: HttpRequestConfig) {}
     async sendRequest(
         options: SendRequestOptions,
     ): Promise<IHttpsClientResponse> {
@@ -18,7 +20,7 @@ export class HttpClient implements IHttpsClient {
                 method: options.method,
                 headers: options.headers,
                 port: options.port,
-                rejectUnauthorized: false,
+                rejectUnauthorized: this.config.rejectUnauthorized,
             });
             req.on("response", (response: IncomingMessage) => {
                 resolve(new HttpsClientResponse(response));

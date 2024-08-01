@@ -26,6 +26,11 @@ type IdConfig = {
 export type SDKConfig = {
     /** Set the environment for the SDK Usage. values: production or development */
     mode: "production" | "development";
+
+    /**
+     * @description Disabling/Enable SSL/TLS certificate validation on HTTPS request
+     * @default false
+     */
     rejectUnauthorized?: boolean;
 };
 

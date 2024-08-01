@@ -30,13 +30,11 @@ export default class IkejaElectric {
     readonly misc: IMisc;
     private requester: Requester;
     constructor(protected ikejaElectricOptions: IkejaElectricOptions) {
-        const rejectUnauthorized =
-            ikejaElectricOptions.config.rejectUnauthorized === false
-                ? false
-                : true;
-        if (!rejectUnauthorized) {
-            process.env["NODE_TLS_REJECT_UNAUTHORIZED"] = "0";
-        }
+        const rejectUnauthorized = ikejaElectricOptions.config
+            .rejectUnauthorized
+            ? true
+            : false;
+
         const config = Util.buildConfig({
             appId: ikejaElectricOptions.appId,
             cisPassword: ikejaElectricOptions.cisPassword,
@@ -48,7 +46,9 @@ export default class IkejaElectric {
             sftpPort: ikejaElectricOptions.sftpPort,
         });
 
-        const httpClient = new HttpClient();
+        const httpClient = new HttpClient({
+            rejectUnauthorized: rejectUnauthorized,
+        });
         const sftpClient = new SFtpClient();
         this.requester = new Requester(httpClient, sftpClient, {
             appId: config.appId,
