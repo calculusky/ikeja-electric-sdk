@@ -11,6 +11,9 @@ export class ReconcilerAPI extends BaseAPI implements rc.IReconciler {
         return `/Agency/${this.getConfig().appId}`;
     }
     private buildNotifyAutoReconciliationFilePath() {
+        if (this.getSDKConfig().mode === "production") {
+            return `${this.getConfig().appId}`;
+        }
         return `/datadrive/sftp/superedge${this.buildFileUploadPath()}`;
     }
 
