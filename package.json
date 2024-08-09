@@ -25,7 +25,8 @@
         "version": "pnpm format",
         "postversion": "git push --tags",
         "npm:patch": "npm version patch",
-        "npm:publish": "npm publish --access public"
+        "npm:publish": "npm publish --access public",
+        "te": "pnpm build && node dist/test"
     },
     "keywords": [
         "Bill Payment",

@@ -17,6 +17,11 @@ export type NotifyAutoReconciliationObject = {
 
     /** Name of reconciliation file, for example: UT000011_COLLECTION_20210715.csv */
     fileName: string;
+
+    /**
+     * Transaction date of the reconciliation. Format: YYYYMMDD
+     */
+    date?: string;
 };
 
 // export type NotifyAutoReconciliationOptions = {
@@ -72,12 +77,21 @@ export type CsvFirstRowContent = {
 export type UploadReconciliationFileOptions = {
     /** Trigger auto transaction reconciliation after a successful file upload. Default is false */
     notify?: boolean;
-};
+} & BuildReconciliationPayload;
 
 export type CSVFileContent = {
     firstRow: CsvFirstRowContent;
     records: CsvFileBodyContent[];
 };
+
+export type BuildReconciliationFileNameOptions = {
+    /**
+     * Transaction date of the reconciliation. Format: YYYYMMDD
+     */
+    date?: string;
+};
+
+export type BuildReconciliationPayload = BuildReconciliationFileNameOptions;
 
 export type IReconciler = {
     /**

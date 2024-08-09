@@ -17,18 +17,20 @@ export class ReconcilerAPI extends BaseAPI implements rc.IReconciler {
         return `/datadrive/sftp/superedge${this.buildFileUploadPath()}`;
     }
 
-    private buildFileName() {
+    private buildFileName(options: rc.BuildReconciliationFileNameOptions) {
         const dateObj = dayjs().subtract(1, "day");
-        const date = dayjs(dateObj).format("YYYYMMDD");
+        const date = options.date ?? dayjs(dateObj).format("YYYYMMDD");
         return `${this.getConfig().appId}_COLLECTION_${date}.csv`;
     }
 
-    private buildReconciliationPayload(): rc.NotifyAutoReconciliationObject {
+    private buildReconciliationPayload(
+        options: rc.BuildReconciliationPayload,
+    ): rc.NotifyAutoReconciliationObject {
         return {
             clientID: this.getConfig().appId,
             fileType: "COLLECTION",
             filePath: this.buildNotifyAutoReconciliationFilePath(),
-            fileName: this.buildFileName(),
+            fileName: this.buildFileName({ date: options.date }),
         };
     }
 
@@ -37,7 +39,9 @@ export class ReconcilerAPI extends BaseAPI implements rc.IReconciler {
     ): Promise<void> {
         const reconcileOptions = notifyObject
             ? notifyObject
-            : this.buildReconciliationPayload();
+            : this.buildReconciliationPayload({
+                  date: notifyObject.date,
+              });
         return await this.send({
             serviceCode: r.ServiceCode.NotifyAutoReconciliation,
             jsonRequestBody: reconcileOptions,
@@ -70,16 +74,21 @@ export class ReconcilerAPI extends BaseAPI implements rc.IReconciler {
 
     async uploadReconciliationFile(
         dataObject: rc.CSVFileContent,
-        options: rc.UploadReconciliationFileOptions = { notify: false },
+        options: rc.UploadReconciliationFileOptions,
     ) {
-        const remoteFilePath = `${this.buildFileUploadPath()}/${this.buildFileName()}`;
+        const notify = options.notify ?? false;
+        const remoteFilePath = `${this.buildFileUploadPath()}/${this.buildFileName(
+            { date: options.date },
+        )}`;
         const csvData = this.buildCsvData(dataObject);
         const uploaded = await this.uploadFile({
             data: csvData,
             remoteFilePath: remoteFilePath,
         });
-        if (options.notify) {
-            const notifyOptions = this.buildReconciliationPayload();
+        if (notify) {
+            const notifyOptions = this.buildReconciliationPayload({
+                date: options.date,
+            });
             await this.notifyAutoReconciliation(notifyOptions);
         }
         return uploaded;
